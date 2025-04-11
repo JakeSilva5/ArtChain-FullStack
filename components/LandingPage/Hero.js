@@ -1,25 +1,24 @@
-import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 
 const Hero = () => {
-  const router = useRouter();
   return (
     <HeroSection>
       <Overlay />
       <HeroContent>
-        <Header>Effortless <Highlight>Automatation</Highlight> for <Highlight>your Club's</Highlight> Car Assignments </Header>
+        <Header>
+          Showcase <Highlight>Your Art</Highlight> on the Blockchain
+        </Header>
         <SubHeader>
-          Stop wasting time manually making car assignments! Just type out your members once and get optimized plans instantly.
+          Mint, share, and build a lineage of creative works — all transparently stored on-chain.
         </SubHeader>
-        <CTAButton onClick={() => router.push('/create-plan')}>
-          Start a Plan ➜
+        <CTAButton>
+          Get Started ➜
         </CTAButton>
       </HeroContent>
     </HeroSection>
   );
 };
-
 
 const HeroSection = styled.section`
   width: 100%;
@@ -30,53 +29,20 @@ const HeroSection = styled.section`
   text-align: center;
   position: relative;
   overflow: hidden;
-  
-  background: linear-gradient(-45deg, #245e90, #3b76b2, #245e90, #3b76b2);
+  background: linear-gradient(-45deg, #1a1a2e, #16213e, #1a1a2e, #16213e);
   background-size: 300% 300%;
   animation: gradientBG 7s linear infinite;
 
   @keyframes gradientBG {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
 `;
 
 const Overlay = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  
-  background: rgba(10, 37, 64, 0.45); 
-  overflow: hidden;
-
-  &::before, &::after {
-    content: "";
-    position: absolute;
-    width: 220px;
-    height: 220px;
-    background: rgba(76, 201, 240, 0.45); /* Brighter, more opaque */
-    border-radius: 50%;
-    filter: blur(90px);
-    animation: float 14s infinite ease-in-out;
-  }
-
-  &::before {
-    top: 15%;
-    left: 10%;
-  }
-  &::after {
-    bottom: 15%;
-    right: 10%;
-    animation-delay: 4s;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-25px); }
-  }
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
 `;
 
 const HeroContent = styled.div`
@@ -89,11 +55,11 @@ const HeroContent = styled.div`
 `;
 
 const Header = styled.h1`
-  font-size: 3rem;
+  font-size: 2.75rem;
   font-weight: bold;
   color: white;
-  text-transform: uppercase;
   margin-bottom: 18px;
+  text-align: center;
 `;
 
 const Highlight = styled.span`
@@ -102,9 +68,9 @@ const Highlight = styled.span`
 
 const SubHeader = styled.p`
   font-size: 1.2rem;
-  font-weight: 400;
   color: white;
   margin-bottom: 30px;
+  text-align: center;
 `;
 
 const CTAButton = styled.button`
@@ -115,16 +81,9 @@ const CTAButton = styled.button`
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0px 4px 12px rgba(76, 201, 240, 0.4);
-  display: flex;
-  align-items: center;
-  gap: 10px;
 
   &:hover {
     background: #3BA6D2;
-    box-shadow: 0px 6px 15px rgba(76, 201, 240, 0.6);
-    transform: translateY(-3px);
   }
 `;
 

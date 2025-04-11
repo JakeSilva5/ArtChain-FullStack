@@ -1,41 +1,28 @@
-import Hero from "@/components/LandingPage/Hero"
-import { styled } from 'styled-components'
-import Navbar from "@/components/Dashboard/Navbar"
-import Footer from "@/components/LandingPage/Footer"
-
+import Hero from "@/components/LandingPage/Hero";
+import { styled } from 'styled-components';
+import Footer from "@/components/LandingPage/Footer";
 
 export default function Home() {
   return (
     <>
-      
       <Hero />
       <FeatureSection>
-       <FeatureCard>
-         <Emoji>🚗</Emoji>
-         <h3>Automated Ride Planning</h3>
-         <p>Instantly assigns passengers to drivers based on capacity & location.</p>
-       </FeatureCard>
+        <FeatureCard>
+          <h3>Mint Original Art</h3>
+          <p>Create an NFT of your artwork and let others build on it.</p>
+        </FeatureCard>
 
+        <FeatureCard>
+          <h3>Lineage Tracking</h3>
+          <p>View generations of inspired child NFTs from original works.</p>
+        </FeatureCard>
 
-       <FeatureCard>
-         <Emoji>📍</Emoji>
-         <h3>Optimized Routes</h3>
-         <p>Uses 3 Google API for extra functionality in optimizing plans.</p>
-       </FeatureCard>
+        <FeatureCard>
+          <h3>On-Chain Royalties</h3>
+          <p>Automatically distribute rewards to original creators as new prints are minted.</p>
+        </FeatureCard>
+      </FeatureSection>
 
-       <FeatureCard>
-         <Emoji>🔄</Emoji>
-         <h3>Live Updates</h3>
-         <p>Easily make changes without having to start over. Including a Manual Adjustment mode.</p>
-       </FeatureCard>
-
-       <FeatureCard>
-         <Emoji>📥</Emoji>
-         <h3>Drag & Drop Adjustments</h3>
-         <p>Club leaders can fine-tune assignments with an interactive interface.</p>
-       </FeatureCard>
-
-     </FeatureSection>
       <Footer />
     </>
   );
@@ -54,17 +41,12 @@ const FeatureSection = styled.div`
 const FeatureCard = styled.div`
   flex: 1 1 280px; 
   max-width: 250px; 
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   padding: 25px;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, background 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.15);
-  }
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  color: white;
 
   h3 {
     margin-bottom: 12px;
@@ -75,10 +57,4 @@ const FeatureCard = styled.div`
     font-size: 1rem;
     opacity: 0.85;
   }
-`;
-
-const Emoji = styled.span`
- font-size: 1.5rem;
- display: block;
- margin-bottom: 10px;
 `;
