@@ -8,10 +8,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: #0A2540;
-    color: white;
-    font-family: 'ClearviewHwy', 'Montserrat', sans-serif;
-  }
+    background-color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+    ...
+  }  
 
   a {
     color: #4CC9F0;
