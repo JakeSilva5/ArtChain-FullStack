@@ -17,12 +17,12 @@ const Footer = () => {
 export default Footer;
 
 const FooterSection = styled.footer`
-  background: #0A1C2E;
-  color: white;
+  background: ${({ theme }) => theme.colors.softGlow};
+  color: ${({ theme }) => theme.colors.muted};
   text-align: center;
-  padding: 15px 0;
-  position: relative;
+  padding: 20px 0;
   width: 100%;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
 const FooterContainer = styled.div`
@@ -33,21 +33,11 @@ const FooterContainer = styled.div`
 `;
 
 const Text = styled.p`
-  font-size: 14px;
-  color: #ccc;
+  font-size: 0.9rem;
   margin: 5px 0;
 `;
 
 const Bold = styled.span`
   font-weight: bold;
-  color: white;
-`;
-
-const FooterLink = styled.a`
-  color: #4CC9F0;
-  text-decoration: none;
-  font-weight: bold;
-  &:hover {
-    text-decoration: underline;
-  }
+  color: ${({ theme }) => theme.colors.text};
 `;

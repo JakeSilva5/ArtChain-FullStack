@@ -19,8 +19,10 @@ const Navbar = () => {
       </CenterSection>
 
       <RightSection>
-        {/* I think wallet connection would go here*/}
-        <Button onClick={() => alert("Wallet Connect Coming Soon")}>Connect Wallet</Button>
+        {/* Wallet connect logic goes here */}
+        <Button onClick={() => alert("Wallet Connect Coming Soon")}>
+          Connect Wallet
+        </Button>
       </RightSection>
     </Nav>
   );
@@ -29,8 +31,8 @@ const Navbar = () => {
 export default Navbar;
 
 const Nav = styled.nav`
-  background: #0A1C2E;
-  color: white;
+  background: ${({ theme }) => theme.colors.accent};
+  color: ${({ theme }) => theme.colors.text};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,20 +40,13 @@ const Nav = styled.nav`
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 `;
 
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-`;
-
-const RightSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-shrink: 0; 
-  min-width: 130px;
 `;
 
 const CenterSection = styled.div`
@@ -61,35 +56,45 @@ const CenterSection = styled.div`
   flex-grow: 1;
   gap: 40px;
   min-width: 300px;
-  `;
+`;
+
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+  min-width: 130px;
+`;
 
 const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
+  font-family: ${({ theme }) => theme.fonts.heading};
 `;
 
 const NavLink = styled(Link)`
   font-size: 1rem;
-  color: white;
+  color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
   transition: color 0.3s ease;
 
   &:hover {
-    color: #4CC9F0;
+    color: ${({ theme }) => theme.colors.purpleAccent};
   }
 `;
 
 const Button = styled.button`
-  background: #4CC9F0;
+  background: ${({ theme }) => theme.colors.purpleAccent};
   color: white;
   border: none;
   padding: 8px 15px;
-  border-radius: 5px;
+  border-radius: ${({ theme }) => theme.radius};
   cursor: pointer;
   transition: background 0.3s ease;
+  font-family: ${({ theme }) => theme.fonts.body};
 
   &:hover {
-    background: #3BA6D2;
+    background: ${({ theme }) => theme.colors.accent};
   }
 `;

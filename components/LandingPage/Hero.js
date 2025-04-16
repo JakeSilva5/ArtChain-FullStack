@@ -1,25 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import HeroAnimation from '@/components/HeroAnimation';
 
 const Hero = () => {
   const router = useRouter();
 
   return (
     <HeroSection>
-      <Overlay />
-      <HeroContent>
-        <Title>
-          Welcome to <Highlight>ArtChain</Highlight>
-        </Title>
-        <Subtitle>
-          Create NFTs. Inspire Others. Earn Royalties.
-        </Subtitle>
-        <ButtonRow>
-          <PrimaryButton onClick={() => router.push('/mint')}>Start Minting</PrimaryButton>
-          <SecondaryButton onClick={() => router.push('/gallery')}>Explore Gallery</SecondaryButton>
-        </ButtonRow>
-      </HeroContent>
+      <Content>
+        <Left>
+          <Title>
+            Welcome to <Highlight>ArtChain</Highlight>
+          </Title>
+          <Subtitle>Create NFTs. Inspire Others. Earn Royalties.</Subtitle>
+          <ButtonRow>
+            <PrimaryButton onClick={() => router.push('/mint')}>Start Minting</PrimaryButton>
+            <SecondaryButton onClick={() => router.push('/gallery')}>Explore Gallery</SecondaryButton>
+          </ButtonRow>
+        </Left>
+        <Right>
+          <HeroAnimation />
+        </Right>
+      </Content>
     </HeroSection>
   );
 };
@@ -27,60 +30,75 @@ const Hero = () => {
 export default Hero;
 
 const HeroSection = styled.section`
-  height: 75vh;
-  width: 100%;
-  position: relative;
+  min-height: 60vh;
+  background: radial-gradient(circle at top left, #0B0B0B 30%, #000 100%);
+  color: ${({ theme }) => theme.colors.text};
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #E0E7FF 0%, #C1C8E4 30%, #7091E6 65%, #8860D0 100%);
-  background-size: 300% 300%;
-  animation: animateBG 12s ease infinite;
+  padding: 60px 30px;
+`;
 
-  @keyframes animateBG {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+const Content = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 0 10px;
+`;
+
+const Left = styled.div`
+  flex: 1.4;
+  min-width: 350px;
+  padding-right: 20px;
+
+  h1 {
+    font-size: 4rem;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  p {
+    font-size: 1.3rem;
+    margin-bottom: 36px;
+    color: ${({ theme }) => theme.colors.text};
   }
 `;
 
-const Overlay = styled.div`
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
-  backdrop-filter: blur(4px);
-  z-index: 1;
-`;
+const Right = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
 
-const HeroContent = styled.div`
-  z-index: 2;
-  text-align: center;
-  max-width: 800px;
-  padding: 0 20px;
+  & > div {
+    max-width: 600px;
+    width: 100%;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 3rem;
-  font-family: ${({ theme }) => theme.fonts.heading};
-  color: ${({ theme }) => theme.colors.text};
-  margin-bottom: 20px;
+  font-size: 3.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 `;
 
 const Highlight = styled.span`
-  color: ${({ theme }) => theme.colors.accent};
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const Subtitle = styled.p`
-  font-size: 1.25rem;
-  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: 1.2rem;
   color: ${({ theme }) => theme.colors.muted};
   margin-bottom: 40px;
 `;
 
+
 const ButtonRow = styled.div`
   display: flex;
-  gap: 20px;
-  justify-content: center;
+  gap: 16px;
   flex-wrap: wrap;
 `;
 
@@ -88,11 +106,12 @@ const PrimaryButton = styled.button`
   background: ${({ theme }) => theme.colors.accent};
   color: white;
   border: none;
-  padding: 14px 28px;
+  padding: 16px 32px;  // 🔼 more padding
   border-radius: ${({ theme }) => theme.radius};
-  font-size: 1rem;
-  cursor: pointer;
+  font-size: 1.1rem;   // 🔼 larger text
   font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
 
   &:hover {
     background: ${({ theme }) => theme.colors.purpleAccent};

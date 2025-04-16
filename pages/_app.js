@@ -4,6 +4,7 @@ import { theme } from '@/styles/theme';
 import Navbar from '@/components/Dashboard/Navbar';
 import Head from 'next/head';
 
+
 export default function App({ Component, pageProps }) {
   return (
     <>
