@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 export default function GalleryPage() {
@@ -11,11 +12,13 @@ export default function GalleryPage() {
       <Content>
         <Grid>
           {Array.from({ length: 9 }).map((_, index) => (
-            <Card key={index}>
-              <ImagePlaceholder />
-              <CardTitle>NFT #{index + 1}</CardTitle>
-              <CardDescription>Preview of a minted NFT.</CardDescription>
-            </Card>
+            <Link key={index} href={`/nft/${index + 1}`} passHref>
+              <Card>
+                <ImagePlaceholder />
+                <CardTitle>NFT #{index + 1}</CardTitle>
+                <CardDescription>Preview of a minted NFT.</CardDescription>
+              </Card>
+            </Link>
           ))}
         </Grid>
       </Content>
@@ -57,13 +60,16 @@ const Grid = styled.div`
   gap: 40px;
 `;
 
-const Card = styled.div`
+const Card = styled.a`
   background: ${({ theme }) => theme.colors.card};
   border-radius: ${({ theme }) => theme.radius};
   box-shadow: ${({ theme }) => theme.glowGreen};
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 
   &:hover {
     transform: translateY(-6px);
@@ -82,6 +88,7 @@ const ImagePlaceholder = styled.div`
 const CardTitle = styled.h3`
   font-size: 1.2rem;
   margin-bottom: 8px;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const CardDescription = styled.p`
