@@ -86,7 +86,7 @@ const Title = styled.h1`
 `;
 
 const Highlight = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.cyan};
 `;
 
 const Subtitle = styled.p`
@@ -103,27 +103,29 @@ const ButtonRow = styled.div`
 `;
 
 const PrimaryButton = styled.button`
-  background: ${({ theme }) => theme.colors.accent};
+  background: ${({ theme }) => theme.colors.primary};
   color: white;
   border: none;
-  padding: 16px 32px;  // 🔼 more padding
+  padding: 16px 32px;
   border-radius: ${({ theme }) => theme.radius};
-  font-size: 1.1rem;   // 🔼 larger text
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, box-shadow 0.3s;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.purpleAccent};
+    background: ${({ theme }) => theme.colors.lime};
+    box-shadow: ${({ theme }) => theme.glowLime};
   }
 `;
 
 const SecondaryButton = styled(PrimaryButton)`
   background: transparent;
-  border: 2px solid ${({ theme }) => theme.colors.accent};
-  color: ${({ theme }) => theme.colors.accent};
+  border: 2px solid ${({ theme }) => theme.colors.lime};
+  color: ${({ theme }) => theme.colors.lime};
 
   &:hover {
-    background: rgba(112, 145, 230, 0.1);
+    background: rgba(50, 255, 126, 0.1);
+    box-shadow: ${({ theme }) => theme.glowLimeHover};
   }
 `;

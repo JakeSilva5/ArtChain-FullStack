@@ -10,7 +10,11 @@ export const theme = {
     card: '#121212',
     text: '#FFFFFF',
     muted: '#CCCCCC',
-    border: '#222222'
+    border: '#222222',
+
+    electricCyan: '#00F0FF',
+    cyan: '#00F0FF',
+    lime: '#32FF7E',   
   },
   fonts: {
     heading: `'Segoe UI', 'Helvetica Neue', sans-serif`,
@@ -18,10 +22,13 @@ export const theme = {
   },
   radius: '12px',
   shadow: '0 6px 18px rgba(76, 201, 240, 0.2)',
+  glowCyan: '0 0 12px #00F0FF',
+  glowLime: '0 0 12px #32FF7E',
+  glowLimeHover: '0 0 16px #32FF7E',
 
   glowGreen: '0 0 20px rgba(0, 255, 115, 0.35)',
-  glowGreenHover: '0 0 25px rgba(0, 255, 115, 0.6)'
-
+  glowGreenHover: '0 0 25px rgba(0, 255, 115, 0.6)',
+       
 };
 
   

@@ -36,6 +36,7 @@ const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 75px;
   padding: 15px 40px;
   position: sticky;
   top: 0;
@@ -54,7 +55,7 @@ const CenterSection = styled.div`
   align-items: center;
   justify-content: center;
   flex-grow: 1;
-  gap: 40px;
+  gap: 50px;
   min-width: 300px;
 `;
 
@@ -67,34 +68,45 @@ const RightSection = styled.div`
 `;
 
 const Logo = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
   font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 0 6px rgba(0, 240, 255, 0.6);
+  cursor: pointer;
 `;
 
 const NavLink = styled(Link)`
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-weight: 500;
   transition: color 0.3s ease;
+
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
 
   &:hover {
     color: ${({ theme }) => theme.colors.purpleAccent};
   }
 `;
 
+
 const Button = styled.button`
-  background: ${({ theme }) => theme.colors.purpleAccent};
+  background-color: ${({ theme }) => theme.colors.primary};
   color: white;
   border: none;
-  padding: 8px 15px;
+  padding: 12px 24px;
+  font-size: 1rem;
   border-radius: ${({ theme }) => theme.radius};
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
-  font-family: ${({ theme }) => theme.fonts.body};
+  transition: all 0.3s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.accent};
+    background-color: #000;
+    color: white;
+    box-shadow: 0 0 14px ${({ theme }) => theme.colors.primary};
   }
-`;
+  `;
