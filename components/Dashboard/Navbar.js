@@ -2,9 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useAddress, useConnect, metamaskWallet } from '@thirdweb-dev/react';
 
 const Navbar = () => {
   const router = useRouter();
+  const address = useAddress();
+  const connect = useConnect();
 
   return (
     <Nav>
@@ -19,10 +22,13 @@ const Navbar = () => {
       </CenterSection>
 
       <RightSection>
-        {/* Wallet connect logic goes here */}
-        <Button onClick={() => alert("Wallet Connect Coming Soon")}>
-          Connect Wallet
-        </Button>
+        {address ? (
+          <ConnectedWallet>Connected: {address.slice(0, 6)}...{address.slice(-4)}</ConnectedWallet>
+        ) : (
+          <Button onClick={() => connect(metamaskWallet())}>
+            Connect Wallet
+          </Button>
+        )}
       </RightSection>
     </Nav>
   );
@@ -91,7 +97,6 @@ const NavLink = styled(Link)`
   }
 `;
 
-
 const Button = styled.button`
   background-color: ${({ theme }) => theme.colors.primary};
   color: white;
@@ -109,4 +114,26 @@ const Button = styled.button`
     color: white;
     box-shadow: 0 0 14px ${({ theme }) => theme.colors.primary};
   }
-  `;
+`;
+
+const ConnectedTag = styled.div`
+  padding: 10px 16px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  border-radius: ${({ theme }) => theme.radius};
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  font-family: ${({ theme }) => theme.fonts.heading};
+`;
+
+const ConnectedWallet = styled.div`
+  font-size: 0.9rem;
+  color: white;
+  font-weight: bold;
+  font-family: ${({ theme }) => theme.fonts.body};
+  background: #000;
+  border-radius: ${({ theme }) => theme.radius};
+  padding: 10px 18px;
+  box-shadow: 0 0 12px ${({ theme }) => theme.colors.primary};
+`;
