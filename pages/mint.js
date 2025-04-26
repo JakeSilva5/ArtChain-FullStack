@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useStorage } from "@thirdweb-dev/react";
 
 export default function MintPage() {
   const [form, setForm] = useState({
@@ -8,6 +9,8 @@ export default function MintPage() {
     image: null,
   });
 
+  const storage = useStorage();
+  
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
@@ -17,11 +20,35 @@ export default function MintPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Minting logic will go here");
+  
+    if (!form.name || !form.description || !form.image) {
+      alert("Please fill in all fields and upload an image.");
+      return;
+    }
+  
+    try {
+      const imageFile = new File([form.image], form.image.name, { type: form.image.type });
+      const imageUri = await storage.upload(imageFile);
+      console.log("✅ Image pinned:", imageUri);
+  
+      const metadata = {
+        name: form.name,
+        description: form.description,
+        image: imageUri,
+      };
+  
+      const metadataUri = await storage.upload(metadata);
+      console.log("✅Metadata URI:", metadataUri);
+  
+      alert("Uploaded to IPFS successfully. Metadata URI: " + metadataUri);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Upload to IPFS failed.");
+    }
   };
-
+  
   return (
     <PageWrapper>
       <GlowContainer>
