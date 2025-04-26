@@ -1,7 +1,52 @@
 import Link from 'next/link';
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import ABI from '@/contracts/abi/ArtChainNFT.json';
+import { ARTCHAINNFT_CONTRACT_ADDRESS } from '@/contracts/constants/contractAddresses';
 
 export default function GalleryPage() {
+  const [nfts, setNfts] = useState([]);
+
+  useEffect(() => {
+    const fetchNFTs = async () => {
+      try {
+        const provider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.binance.org:8545"); // TBNB
+        const contract = new ethers.Contract(ARTCHAINNFT_CONTRACT_ADDRESS, ABI, provider);
+    
+        let results = [];
+        let tokenId = 0;
+        while (true) {
+          try {
+            const owner = await contract.ownerOf(tokenId); // <-- check if owner exists
+            const tokenUri = await contract.tokenURI(tokenId);
+            const ipfsGatewayUrl = tokenUri.replace("ipfs://", "https://ipfs.io/ipfs/");
+    
+            const metadataResponse = await fetch(ipfsGatewayUrl);
+            const metadata = await metadataResponse.json();
+    
+            results.push({
+              tokenId,
+              name: metadata.name,
+              image: metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
+            });
+    
+            tokenId++;
+          } catch (error) {
+            console.log("No more tokens after tokenId:", tokenId - 1);
+            break;
+          }
+        }
+    
+        setNfts(results);
+      } catch (error) {
+        console.error("Failed to fetch NFTs:", error);
+      }
+    };
+    
+    fetchNFTs();
+  }, []);
+
   return (
     <PageWrapper>
       <Header>
@@ -11,12 +56,12 @@ export default function GalleryPage() {
 
       <Content>
         <Grid>
-          {Array.from({ length: 9 }).map((_, index) => (
-            <Link key={index} href={`/nft/${index + 1}`} passHref>
+          {nfts.map((nft) => (
+            <Link key={nft.tokenId} href={`/nft/${nft.tokenId}`} passHref>
               <Card>
-                <ImagePlaceholder />
-                <CardTitle>NFT #{index + 1}</CardTitle>
-                <CardDescription>Preview of a minted NFT.</CardDescription>
+                <NFTImage src={nft.image} alt={nft.name} />
+                <CardTitle>{nft.name}</CardTitle>
+                <CardDescription>View details →</CardDescription>
               </Card>
             </Link>
           ))}
@@ -77,10 +122,10 @@ const Card = styled.a`
   }
 `;
 
-const ImagePlaceholder = styled.div`
+const NFTImage = styled.img`
   width: 100%;
   height: 200px;
-  background: linear-gradient(135deg, #444, #222);
+  object-fit: cover;
   border-radius: ${({ theme }) => theme.radius};
   margin-bottom: 20px;
 `;
