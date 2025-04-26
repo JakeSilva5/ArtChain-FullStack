@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useStorage } from "@thirdweb-dev/react";
 import { mintNFT } from '@/helper/mintNFT';
 
+
 export default function MintPage() {
   const [form, setForm] = useState({
     name: '',
