@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import ABI from "@/contracts/abi/ArtChainNFT.json";
-import { CONTRACT_ADDRESS } from "@/contracts/constants/contractAddresses";
+import { ARTCHAINNFT_CONTRACT_ADDRESS } from "@/contracts/constants/contractAddresses";
 
 /**
 Function to mint an NFT on the blockchain
@@ -18,7 +18,12 @@ export async function mintNFT(metadataURI) {
     const signer = provider.getSigner();
 
     //creating contract instance
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+    const contract = new ethers.Contract(
+      ARTCHAINNFT_CONTRACT_ADDRESS,
+      ABI,
+      signer
+    );
+    
 
     //calling mintNFT function on contract
     const tx = await contract.mintNFT(metadataURI, 0); // parentTokenId = 0 = no parent

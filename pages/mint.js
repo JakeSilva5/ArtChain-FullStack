@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useStorage } from "@thirdweb-dev/react";
+import { mintNFT } from '@/helper/mintNFT';
 
 export default function MintPage() {
   const [form, setForm] = useState({
@@ -9,8 +10,10 @@ export default function MintPage() {
     image: null,
   });
 
+  const [loading, setLoading] = useState(false);
+
   const storage = useStorage();
-  
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
@@ -22,30 +25,44 @@ export default function MintPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!form.name || !form.description || !form.image) {
       alert("Please fill in all fields and upload an image.");
       return;
     }
-  
+
     try {
+      setLoading(true);
+
       const imageFile = new File([form.image], form.image.name, { type: form.image.type });
       const imageUri = await storage.upload(imageFile);
       console.log("✅ Image pinned:", imageUri);
-  
+
       const metadata = {
         name: form.name,
         description: form.description,
         image: imageUri,
       };
-  
+
       const metadataUri = await storage.upload(metadata);
-      console.log("✅Metadata URI:", metadataUri);
-  
-      alert("Uploaded to IPFS successfully. Metadata URI: " + metadataUri);
+      console.log("✅ Metadata pinned:", metadataUri);
+
+      const tx = await mintNFT(metadataUri);
+      console.log("✅ Minted NFT:", tx);
+
+      alert("NFT minted successfully! 🎉");
+      
+      setForm({
+        name: '',
+        description: '',
+        image: null,
+      });
+
     } catch (error) {
-      console.error("Upload failed:", error);
-      alert("Upload to IPFS failed.");
+      console.error("Upload or Minting failed:", error);
+      alert("Something went wrong.");
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -65,6 +82,7 @@ export default function MintPage() {
             value={form.name}
             onChange={handleChange}
             placeholder="Enter name of your NFT"
+            disabled={loading}
           />
 
           <Label>Description</Label>
@@ -73,6 +91,7 @@ export default function MintPage() {
             value={form.description}
             onChange={handleChange}
             placeholder="Enter a short description"
+            disabled={loading}
           />
 
           <Label>Upload Visual</Label>
@@ -82,10 +101,13 @@ export default function MintPage() {
               name="image"
               accept="image/*"
               onChange={handleChange}
+              disabled={loading}
             />
           </UploadContainer>
 
-          <SubmitButton type="submit">Mint NFT</SubmitButton>
+          <SubmitButton type="submit" disabled={loading}>
+            {loading ? "Processing..." : "Mint NFT"}
+          </SubmitButton>
         </Form>
       </GlowContainer>
     </PageWrapper>
