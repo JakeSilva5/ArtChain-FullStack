@@ -45,6 +45,11 @@ export default function NftDetailPage() {
     fetchNFT();
   }, [id]);
 
+  const handleInspire = () => {
+    if (!id) return;
+    router.push(`/mint?parentId=${id}`);
+  };
+
   return (
     <PageWrapper>
       <FixedBackButton onClick={() => router.push('/gallery')}>
@@ -77,6 +82,9 @@ export default function NftDetailPage() {
                 <li>Chain: TBNB</li>
                 <li>License: CC0</li>
               </ul>
+              <InspireButton onClick={handleInspire}>
+                Create an Inspired NFT✨ 
+              </InspireButton>
             </>
           ) : (
             <h1>Loading NFT...</h1>
@@ -195,5 +203,24 @@ const FixedBackButton = styled.button`
     left: 20px;
     font-size: 0.85rem;
     padding: 8px 14px;
+  }
+`;
+
+const InspireButton = styled.button`
+  margin-top: 30px;
+  padding: 14px 28px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: ${({ theme }) => theme.radius};
+  cursor: pointer;
+  transition: 0.3s;
+  
+  &:hover {
+    background: #000;
+    box-shadow: 0 0 14px ${({ theme }) => theme.colors.primary};
+    color: white;
   }
 `;

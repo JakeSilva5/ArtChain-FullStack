@@ -6,8 +6,9 @@ import { ARTCHAINNFT_CONTRACT_ADDRESS } from "@/contracts/constants/contractAddr
 Function to mint an NFT on the blockchain
 
 @param {string} metadataURI - The IPFS URI of the metadata.json
+@param {number} parentId - The parent NFT tokenId (default 0 = no parent)
  */
-export async function mintNFT(metadataURI) {
+export async function mintNFT(metadataURI, parentId = 0) {
   if (!window.ethereum) {
     throw new Error("No crypto wallet found. Please install Metamask.");
   }
@@ -24,12 +25,12 @@ export async function mintNFT(metadataURI) {
       signer
     );
     
-
     //calling mintNFT function on contract
-    const tx = await contract.mintNFT(metadataURI, 0); // parentTokenId = 0 = no parent
+    const tx = await contract.mintNFT(metadataURI, parentId);
     console.log("Transaction sent:", tx.hash);
 
-    await tx.wait(); //waiting for confirmation
+    //waiting for confirmation
+    await tx.wait();
     console.log("Transaction confirmed:", tx.hash);
 
     return tx;

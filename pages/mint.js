@@ -2,9 +2,13 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useStorage } from "@thirdweb-dev/react";
 import { mintNFT } from '@/helper/mintNFT';
-
+import { useRouter } from 'next/router';
 
 export default function MintPage() {
+
+  const router = useRouter();
+  const { parentId } = router.query; //getting the parentID from URL
+
   const [form, setForm] = useState({
     name: '',
     description: '',
@@ -48,7 +52,7 @@ export default function MintPage() {
       const metadataUri = await storage.upload(metadata);
       console.log("✅ Metadata pinned:", metadataUri);
 
-      const tx = await mintNFT(metadataUri);
+      const tx = await mintNFT(metadataUri, parentId ? parseInt(parentId) : 0); //passing the parentID if it exists
       console.log("✅ Minted NFT:", tx);
 
       alert("NFT minted successfully! 🎉");
