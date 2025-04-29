@@ -13,7 +13,7 @@ const Hero = () => {
           <Title>
             Welcome to <Highlight>ArtChain</Highlight>
           </Title>
-          <Subtitle>Create NFTs. Inspire Others. Earn Royalties.</Subtitle>
+          <Subtitle>Create NFTs. Inspire Others. Earn Credit.</Subtitle>
           <ButtonRow>
             <PrimaryButton onClick={() => router.push('/mint')}>Start Minting</PrimaryButton>
             <SecondaryButton onClick={() => router.push('/gallery')}>Explore Gallery</SecondaryButton>

@@ -18,8 +18,8 @@ export default function Home() {
             <p>View generations of inspired child NFTs from original works.</p>
           </FeatureCard>
           <FeatureCard>
-            <h3>On-Chain Royalties</h3>
-            <p>Automatically distribute rewards to original creators as new prints are minted.</p>
+            <h3>On-Chain Credit</h3>
+            <p>Automatically distribute immutable credit to original creators as new prints are minted.</p>
           </FeatureCard>
         </FeatureRow>
       </FeatureSection>
