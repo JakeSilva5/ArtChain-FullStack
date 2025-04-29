@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { useStorage } from "@thirdweb-dev/react";
 import { mintNFT } from '@/helper/mintNFT';
-import { useRouter } from 'next/router';
+import { ethers } from "ethers";
+import { ARTCHAINNFT_CONTRACT_ADDRESS } from '@/contracts/constants/contractAddresses';
+import ABI from '@/contracts/abi/ArtChainNFT.json';
+
 
 export default function MintPage() {
-
   const router = useRouter();
-  const { parentId } = router.query; //getting the parentID from URL
+  const { parentId } = router.query;
 
   const [form, setForm] = useState({
     name: '',
@@ -16,8 +19,32 @@ export default function MintPage() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [useParentImage, setUseParentImage] = useState(false);
+  const [parentImageUri, setParentImageUri] = useState(null);
 
   const storage = useStorage();
+
+  useEffect(() => {
+    const fetchParentMetadata = async () => {
+      if (!parentId) return;
+
+      try {
+        const provider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.binance.org:8545");
+        const contract = new ethers.Contract(ARTCHAINNFT_CONTRACT_ADDRESS, ABI, provider);
+
+        const tokenUri = await contract.tokenURI(parentId);
+        const ipfsGatewayUrl = tokenUri.replace("ipfs://", "https://ipfs.io/ipfs/");
+        const metadataResponse = await fetch(ipfsGatewayUrl);
+        const metadata = await metadataResponse.json();
+
+        setParentImageUri(metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      } catch (error) {
+        console.error("Failed to fetch parent metadata:", error);
+      }
+    };
+
+    fetchParentMetadata();
+  }, [parentId]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -31,32 +58,36 @@ export default function MintPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.description || !form.image) {
-      alert("Please fill in all fields and upload an image.");
+    if (!form.name || !form.description || (!useParentImage && !form.image)) {
+      alert("Please fill in all fields.");
       return;
     }
 
     try {
       setLoading(true);
 
-      const imageFile = new File([form.image], form.image.name, { type: form.image.type });
-      const imageUri = await storage.upload(imageFile);
-      console.log("✅ Image pinned:", imageUri);
+      let finalImageUri;
+
+      if (useParentImage) {
+        finalImageUri = parentImageUri;
+      } else {
+        const imageFile = new File([form.image], form.image.name, { type: form.image.type });
+        finalImageUri = await storage.upload(imageFile);
+      }
 
       const metadata = {
         name: form.name,
         description: form.description,
-        image: imageUri,
+        image: finalImageUri,
       };
 
       const metadataUri = await storage.upload(metadata);
-      console.log("✅ Metadata pinned:", metadataUri);
 
-      const tx = await mintNFT(metadataUri, parentId ? parseInt(parentId) : 0); //passing the parentID if it exists
+      const tx = await mintNFT(metadataUri, parentId ? parseInt(parentId) : 0);
       console.log("✅ Minted NFT:", tx);
 
       alert("NFT minted successfully! 🎉");
-      
+
       setForm({
         name: '',
         description: '',
@@ -70,7 +101,7 @@ export default function MintPage() {
       setLoading(false);
     }
   };
-  
+
   return (
     <PageWrapper>
       <GlowContainer>
@@ -80,6 +111,20 @@ export default function MintPage() {
         </Header>
 
         <Form onSubmit={handleSubmit}>
+          {parentId && (
+            <CheckboxRow>
+              <input
+                type="checkbox"
+                id="useParentImage"
+                checked={useParentImage}
+                onChange={(e) => setUseParentImage(e.target.checked)}
+              />
+              <label htmlFor="useParentImage">
+                Use original NFT's image
+              </label>
+            </CheckboxRow>
+          )}
+
           <Label>Artwork Name</Label>
           <Input
             type="text"
@@ -99,16 +144,20 @@ export default function MintPage() {
             disabled={loading}
           />
 
-          <Label>Upload Visual</Label>
-          <UploadContainer>
-            <UploadInput
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </UploadContainer>
+          {!useParentImage && (
+            <>
+              <Label>Upload Visual</Label>
+              <UploadContainer>
+                <UploadInput
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleChange}
+                  disabled={loading}
+                />
+              </UploadContainer>
+            </>
+          )}
 
           <SubmitButton type="submit" disabled={loading}>
             {loading ? "Processing..." : "Mint NFT"}
@@ -118,6 +167,8 @@ export default function MintPage() {
     </PageWrapper>
   );
 }
+
+/* ---------------- STYLES ---------------- */
 
 const PageWrapper = styled.div`
   background: ${({ theme }) => theme.colors.background};
@@ -155,6 +206,20 @@ const Header = styled.div`
 
 const Form = styled.form`
   width: 100%;
+`;
+
+const CheckboxRow = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  input {
+    margin-right: 10px;
+  }
+
+  label {
+    font-size: 1rem;
+  }
 `;
 
 const Label = styled.label`

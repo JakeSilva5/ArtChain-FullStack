@@ -10,6 +10,7 @@ export default function NftDetailPage() {
   const { id } = router.query;
 
   const [nft, setNft] = useState(null);
+  const [parentName, setParentName] = useState(null);
 
   useEffect(() => {
     const fetchNFT = async () => {
@@ -36,6 +37,19 @@ export default function NftDetailPage() {
           owner,
           parentId: parentId.toString()
         });
+
+        if (parentId.toString() !== "0") {
+          try {
+            const parentTokenUri = await contract.tokenURI(parentId);
+            const parentMetadataResponse = await fetch(parentTokenUri.replace("ipfs://", "https://ipfs.io/ipfs/"));
+            const parentMetadata = await parentMetadataResponse.json();
+            setParentName(parentMetadata.name);
+          } catch (error) {
+            console.warn("Failed to fetch parent NFT metadata:", error);
+            setParentName(null);
+          }
+        }
+    
 
       } catch (error) {
         console.error("Failed to fetch NFT metadata:", error);
@@ -77,7 +91,7 @@ export default function NftDetailPage() {
               <ul>
                 <li>Owner: {nft.owner}</li>
                 {nft.parentId !== "0" && (
-                  <li>Inspired by: NFT #{nft.parentId}</li>
+                  <li>Inspired by: {parentName ? parentName : `NFT #${nft.parentId}`}</li>
                 )}
                 <li>Chain: TBNB</li>
                 <li>License: CC0</li>

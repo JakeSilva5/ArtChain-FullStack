@@ -11,39 +11,42 @@ export default function GalleryPage() {
   useEffect(() => {
     const fetchNFTs = async () => {
       try {
-        const provider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.binance.org:8545"); // TBNB
+        const provider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.binance.org:8545");
         const contract = new ethers.Contract(ARTCHAINNFT_CONTRACT_ADDRESS, ABI, provider);
-    
+
         let results = [];
         let tokenId = 0;
-        while (true) {
+        let emptyAttempts = 0;
+
+        while (emptyAttempts < 5) { 
           try {
-            const owner = await contract.ownerOf(tokenId); // <-- check if owner exists
+            const owner = await contract.ownerOf(tokenId);
             const tokenUri = await contract.tokenURI(tokenId);
             const ipfsGatewayUrl = tokenUri.replace("ipfs://", "https://ipfs.io/ipfs/");
-    
+
             const metadataResponse = await fetch(ipfsGatewayUrl);
             const metadata = await metadataResponse.json();
-    
+
             results.push({
               tokenId,
               name: metadata.name,
               image: metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
             });
-    
+
             tokenId++;
+            emptyAttempts = 0;
           } catch (error) {
-            console.log("No more tokens after tokenId:", tokenId - 1);
-            break;
+            tokenId++;
+            emptyAttempts++;
           }
         }
-    
+
         setNfts(results);
       } catch (error) {
         console.error("Failed to fetch NFTs:", error);
       }
     };
-    
+
     fetchNFTs();
   }, []);
 

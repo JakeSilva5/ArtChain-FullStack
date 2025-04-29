@@ -20,7 +20,9 @@ export default function CollectionPage() {
 
         let results = [];
         let tokenId = 0;
-        while (true) {
+        let emptyAttempts = 0;
+
+        while (emptyAttempts < 5) {
           try {
             const owner = await contract.ownerOf(tokenId);
             if (owner.toLowerCase() === address.toLowerCase()) {
@@ -36,8 +38,10 @@ export default function CollectionPage() {
               });
             }
             tokenId++;
+            emptyAttempts = 0;
           } catch (error) {
-            break; // No more tokens
+            tokenId++;
+            emptyAttempts++;
           }
         }
 
