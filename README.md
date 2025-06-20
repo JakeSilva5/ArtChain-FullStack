@@ -5,7 +5,7 @@ ArtChain is a decentralized NFT art gallery built to empower artists by minting 
 - **Mint Original Art**: Easily create NFTs of your artwork.
 - **Gallery**: View all minted NFTs.
 - **My Collection**: Manage and display NFTs owned by your connected wallet.
-- **Lineage Tracking**: Keep track of derivative NFTs inspired by original works.
+- **Lineage Tracking**: Keep track of child NFTs inspired by original works.
 
 ## Installation and Configuration
 
