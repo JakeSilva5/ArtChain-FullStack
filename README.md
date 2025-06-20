@@ -16,14 +16,14 @@ Ensure you have the following installed:
 
 ### Install Dependencies
 npm install
-# or
+or
 yarn install
 
 ## Running the Application
 
 ### Development Server
 npm install
-# or
+or
 yarn install
 
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
