@@ -49,4 +49,4 @@ For specific NFT details and lineage, visit:
 MIT License
 
 ## Acknowledgments
-Developed by Jake Silva as a project for CMPSC 263 (Web Dev). This prokect utilizes Next.js, React, styled-components, ethers.js, and Thirdweb tools.
+Developed by Jake Silva as a project for CMPSC 263 (Web Dev). This project utilizes Next.js, React, styled-components, ethers.js, and Thirdweb tools.
